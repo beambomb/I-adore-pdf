@@ -16,4 +16,9 @@ export const tools: ToolInfo[] = [
     title: "Split PDF",
     description: "Extract page ranges or save every page as its own PDF.",
   },
+  {
+    path: "/image-to-pdf",
+    title: "Image to PDF",
+    description: "Convert JPG, PNG or WEBP images into a PDF document.",
+  },
 ];
