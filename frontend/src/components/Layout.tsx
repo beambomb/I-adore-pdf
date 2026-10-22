@@ -1,4 +1,5 @@
-import { Link, Outlet } from "react-router-dom";
+import { Link, NavLink, Outlet } from "react-router-dom";
+import { tools } from "../tools";
 
 export default function Layout() {
   return (
@@ -8,6 +9,13 @@ export default function Layout() {
           <Link to="/" className="app-brand">
             I-adore-<span>pdf</span>
           </Link>
+          <nav aria-label="Tools" className="app-nav">
+            {tools.map((tool) => (
+              <NavLink key={tool.path} to={tool.path} className="app-nav__link">
+                {tool.title}
+              </NavLink>
+            ))}
+          </nav>
         </div>
       </header>
       <main className="app-main">
