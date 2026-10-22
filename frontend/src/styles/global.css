@@ -335,3 +335,8 @@ a {
   border-radius: var(--radius);
   background: var(--color-bg);
 }
+
+.hint--inline {
+  display: block;
+  margin: 0 0 var(--space-2) 22px;
+}

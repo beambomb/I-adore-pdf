@@ -1,5 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import Layout from "./components/Layout";
+import CompressPage from "./pages/CompressPage";
 import HomePage from "./pages/HomePage";
 import ImageToPdfPage from "./pages/ImageToPdfPage";
 import MergePage from "./pages/MergePage";
@@ -14,6 +15,7 @@ export default function App() {
         <Route path="merge" element={<MergePage />} />
         <Route path="split" element={<SplitPage />} />
         <Route path="image-to-pdf" element={<ImageToPdfPage />} />
+        <Route path="compress" element={<CompressPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>

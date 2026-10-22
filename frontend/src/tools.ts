@@ -21,4 +21,9 @@ export const tools: ToolInfo[] = [
     title: "Image to PDF",
     description: "Convert JPG, PNG or WEBP images into a PDF document.",
   },
+  {
+    path: "/compress",
+    title: "Compress PDF",
+    description: "Reduce PDF file size with three quality presets.",
+  },
 ];
