@@ -3,8 +3,14 @@ FROM python:3.12-slim
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1
 
+# ghostscript: PDF compression and OCRmyPDF rasterizing
+# tesseract-ocr (+ English and Indonesian data): OCR
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends ghostscript \
+    && apt-get install -y --no-install-recommends \
+        ghostscript \
+        tesseract-ocr \
+        tesseract-ocr-eng \
+        tesseract-ocr-ind \
     && rm -rf /var/lib/apt/lists/*
 
 RUN useradd --create-home --uid 1000 app
