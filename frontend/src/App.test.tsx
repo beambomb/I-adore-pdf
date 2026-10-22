@@ -1,21 +1,25 @@
 import { render, screen } from "@testing-library/react";
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { MemoryRouter } from "react-router-dom";
+import { describe, expect, it } from "vitest";
 import App from "./App";
 
-describe("App", () => {
-  afterEach(() => {
-    vi.unstubAllGlobals();
+function renderAt(path: string) {
+  return render(
+    <MemoryRouter initialEntries={[path]}>
+      <App />
+    </MemoryRouter>,
+  );
+}
+
+describe("App routing", () => {
+  it("renders the home page inside the layout", () => {
+    renderAt("/");
+    expect(screen.getByRole("link", { name: /I-adore-pdf/ })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(/tool you need/i);
   });
 
-  it("shows OK when the backend health check succeeds", async () => {
-    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true }));
-    render(<App />);
-    expect(await screen.findByText("OK")).toBeInTheDocument();
-  });
-
-  it("shows Unavailable when the backend is down", async () => {
-    vi.stubGlobal("fetch", vi.fn().mockRejectedValue(new Error("offline")));
-    render(<App />);
-    expect(await screen.findByText("Unavailable")).toBeInTheDocument();
+  it("renders a not-found page for unknown routes", () => {
+    renderAt("/does-not-exist");
+    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("Page not found");
   });
 });
