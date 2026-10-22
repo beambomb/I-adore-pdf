@@ -1,0 +1,30 @@
+# Production-like setup: one container serves the API and the web app.
+#
+#   docker compose up --build        then open http://localhost:8000
+#
+# The port is bound to localhost only and there is NO login by default.
+# Before exposing this to a network, set AUTH_USERNAME and AUTH_PASSWORD
+# (see .env.example and the README).
+services:
+  app:
+    build: .
+    ports:
+      - "127.0.0.1:8000:8000"
+    environment:
+      MAX_FILE_MB: ${MAX_FILE_MB:-50}
+      MAX_TOTAL_MB: ${MAX_TOTAL_MB:-200}
+      JOB_TTL_SECONDS: ${JOB_TTL_SECONDS:-1800}
+      RATE_LIMIT_PER_MINUTE: ${RATE_LIMIT_PER_MINUTE:-120}
+      TRUST_PROXY_HEADERS: ${TRUST_PROXY_HEADERS:-false}
+      CORS_ORIGINS: ${CORS_ORIGINS:-}
+      AUTH_USERNAME: ${AUTH_USERNAME:-}
+      AUTH_PASSWORD: ${AUTH_PASSWORD:-}
+    # Uploaded and processed files only ever live in memory-backed temp storage.
+    tmpfs:
+      - /tmp:size=2g,mode=1777
+    read_only: true
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
