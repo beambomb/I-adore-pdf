@@ -6,7 +6,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 
 from app.deps import get_job_store, get_settings
-from app.routers import compress, download, image_to_pdf, merge, split
+from app.routers import compress, download, image_to_pdf, merge, scan, split
 
 
 async def _cleanup_loop(interval: int) -> None:
@@ -38,6 +38,7 @@ app.include_router(merge.router)
 app.include_router(split.router)
 app.include_router(image_to_pdf.router)
 app.include_router(compress.router)
+app.include_router(scan.router)
 
 
 @app.get("/api/health")
