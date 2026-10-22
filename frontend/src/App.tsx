@@ -5,6 +5,7 @@ import HomePage from "./pages/HomePage";
 import ImageToPdfPage from "./pages/ImageToPdfPage";
 import MergePage from "./pages/MergePage";
 import NotFoundPage from "./pages/NotFoundPage";
+import ScanPage from "./pages/ScanPage";
 import SplitPage from "./pages/SplitPage";
 
 export default function App() {
@@ -16,6 +17,7 @@ export default function App() {
         <Route path="split" element={<SplitPage />} />
         <Route path="image-to-pdf" element={<ImageToPdfPage />} />
         <Route path="compress" element={<CompressPage />} />
+        <Route path="scan" element={<ScanPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>

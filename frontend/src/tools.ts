@@ -26,4 +26,9 @@ export const tools: ToolInfo[] = [
     title: "Compress PDF",
     description: "Reduce PDF file size with three quality presets.",
   },
+  {
+    path: "/scan",
+    title: "Scan document",
+    description: "Turn photos of documents into clean black and white PDF pages.",
+  },
 ];
