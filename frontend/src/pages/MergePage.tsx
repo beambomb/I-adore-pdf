@@ -1,21 +1,21 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { ApiError, postForm, type JobResult } from "../api/client";
 import FileDropzone from "../components/FileDropzone";
-import FileList, { type QueuedFile } from "../components/FileList";
+import FileList from "../components/FileList";
 import ResultPanel from "../components/ResultPanel";
 import ToolLayout from "../components/ToolLayout";
-import { moveItem, removeAt } from "../lib/reorder";
+import { useFileQueue } from "../hooks/useFileQueue";
 
 export default function MergePage() {
-  const nextId = useRef(1);
-  const [items, setItems] = useState<QueuedFile[]>([]);
+  const queue = useFileQueue();
+  const { items } = queue;
   const [busy, setBusy] = useState(false);
   const [progress, setProgress] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<JobResult | null>(null);
 
   function addFiles(files: File[]) {
-    setItems((current) => [...current, ...files.map((file) => ({ id: nextId.current++, file }))]);
+    queue.add(files);
     setError(null);
   }
 
@@ -35,7 +35,7 @@ export default function MergePage() {
   }
 
   function reset() {
-    setItems([]);
+    queue.clear();
     setResult(null);
     setError(null);
     setProgress(0);
@@ -57,12 +57,7 @@ export default function MergePage() {
             label="Select PDF files"
             onFiles={addFiles}
           />
-          <FileList
-            items={items}
-            disabled={busy}
-            onMove={(from, to) => setItems((current) => moveItem(current, from, to))}
-            onRemove={(index) => setItems((current) => removeAt(current, index))}
-          />
+          <FileList items={items} disabled={busy} onMove={queue.move} onRemove={queue.remove} />
           {items.length === 1 && <p className="hint">Add at least one more PDF to merge.</p>}
           {busy && <progress className="progress" value={progress} max={1} aria-label="Upload progress" />}
           {error && (
