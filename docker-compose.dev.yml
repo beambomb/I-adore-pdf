@@ -1,0 +1,25 @@
+# Dev setup with hot reload. Ports are bound to localhost only.
+# Note: there is no authentication, so keep this on localhost.
+services:
+  backend:
+    build: ./backend
+    command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+    volumes:
+      - ./backend/app:/srv/backend/app
+    ports:
+      - "127.0.0.1:8000:8000"
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    environment:
+      VITE_API_TARGET: http://backend:8000
+    volumes:
+      - ./frontend/src:/srv/frontend/src
+      - ./frontend/index.html:/srv/frontend/index.html
+      - ./frontend/vite.config.ts:/srv/frontend/vite.config.ts
+    ports:
+      - "127.0.0.1:5173:5173"
+    depends_on:
+      - backend
