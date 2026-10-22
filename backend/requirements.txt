@@ -4,3 +4,5 @@ python-multipart==0.0.32
 pypdf==6.21.2
 img2pdf==0.6.3
 pillow==13.0.0
+numpy==2.5.4
+opencv-python-headless==5.0.0.93
