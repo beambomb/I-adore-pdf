@@ -1,6 +1,39 @@
+import asyncio
+import contextlib
+from collections.abc import AsyncIterator
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 
-app = FastAPI(title="I-adore-pdf", docs_url="/api/docs", openapi_url="/api/openapi.json")
+from app.deps import get_job_store, get_settings
+from app.routers import download
+
+
+async def _cleanup_loop(interval: int) -> None:
+    store = get_job_store()
+    while True:
+        await asyncio.sleep(interval)
+        await asyncio.to_thread(store.cleanup_expired)
+
+
+@asynccontextmanager
+async def lifespan(_: FastAPI) -> AsyncIterator[None]:
+    task = asyncio.create_task(_cleanup_loop(get_settings().cleanup_interval_seconds))
+    try:
+        yield
+    finally:
+        task.cancel()
+        with contextlib.suppress(asyncio.CancelledError):
+            await task
+
+
+app = FastAPI(
+    title="I-adore-pdf",
+    docs_url="/api/docs",
+    openapi_url="/api/openapi.json",
+    lifespan=lifespan,
+)
+app.include_router(download.router)
 
 
 @app.get("/api/health")
