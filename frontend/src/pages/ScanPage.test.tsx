@@ -100,6 +100,29 @@ describe("ScanPage", () => {
     expect(scan.form.get("auto_crop")).toBe("true");
   });
 
+  it("does not ask for OCR by default", async () => {
+    render(<ScanPage />);
+    await userEvent.upload(screen.getByLabelText("Choose files"), photo("a.jpg"));
+    expect(screen.queryByLabelText("Indonesian")).not.toBeInTheDocument();
+    await userEvent.click(screen.getByRole("button", { name: "Scan to PDF" }));
+    await screen.findByRole("link", { name: "Download" });
+    const scan = calls.find((c) => c.url === "/api/scan")!;
+    expect(scan.form.get("ocr")).toBe("false");
+    expect(scan.form.has("languages")).toBe(false);
+  });
+
+  it("sends OCR options when 'Make text searchable' is enabled", async () => {
+    render(<ScanPage />);
+    await userEvent.upload(screen.getByLabelText("Choose files"), photo("a.jpg"));
+    await userEvent.click(screen.getByLabelText(/Make text searchable/));
+    await userEvent.click(screen.getByLabelText("Indonesian"));
+    await userEvent.click(screen.getByRole("button", { name: "Scan to PDF" }));
+    await screen.findByRole("link", { name: "Download" });
+    const scan = calls.find((c) => c.url === "/api/scan")!;
+    expect(scan.form.get("ocr")).toBe("true");
+    expect(scan.form.get("languages")).toBe("eng,ind");
+  });
+
   it("shows a server error from the scan request", async () => {
     handler = ({ url }) =>
       url === "/api/scan/preview"

@@ -5,7 +5,9 @@ import FileList from "../components/FileList";
 import ResultPanel from "../components/ResultPanel";
 import ScanPreview, { type ScanMode } from "../components/ScanPreview";
 import ToolLayout from "../components/ToolLayout";
+import LanguageSelect from "../components/LanguageSelect";
 import { useFileQueue } from "../hooks/useFileQueue";
+import { toLanguagesParam, type OcrLanguage } from "../lib/ocr";
 
 const IMAGE_ACCEPT = ["image/jpeg", "image/png", "image/webp", ".jpg", ".jpeg", ".png", ".webp"];
 
@@ -20,6 +22,8 @@ export default function ScanPage() {
   const { items } = queue;
   const [mode, setMode] = useState<ScanMode>("bw");
   const [autoCrop, setAutoCrop] = useState(true);
+  const [runOcr, setRunOcr] = useState(false);
+  const [languages, setLanguages] = useState<OcrLanguage[]>(["eng"]);
   const [previewId, setPreviewId] = useState<number | null>(null);
   const [busy, setBusy] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -37,6 +41,8 @@ export default function ScanPage() {
     items.forEach((item) => form.append("files", item.file, item.file.name));
     form.append("mode", mode);
     form.append("auto_crop", String(autoCrop));
+    form.append("ocr", String(runOcr));
+    if (runOcr) form.append("languages", toLanguagesParam(languages));
     try {
       setResult(await postForm<JobResult>("/api/scan", form, setProgress));
     } catch (err) {
@@ -108,7 +114,17 @@ export default function ScanPage() {
                   />{" "}
                   Detect page edges, crop and straighten
                 </label>
+                <label className="radio">
+                  <input
+                    type="checkbox"
+                    checked={runOcr}
+                    disabled={busy}
+                    onChange={(event) => setRunOcr(event.target.checked)}
+                  />{" "}
+                  Make text searchable (OCR)
+                </label>
               </div>
+              {runOcr && <LanguageSelect value={languages} disabled={busy} onChange={setLanguages} />}
 
               {items.length > 1 && previewItem && (
                 <div className="field-group">
