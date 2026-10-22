@@ -31,4 +31,9 @@ export const tools: ToolInfo[] = [
     title: "Scan document",
     description: "Turn photos of documents into clean black and white PDF pages.",
   },
+  {
+    path: "/ocr",
+    title: "OCR PDF",
+    description: "Make scanned PDFs searchable and copyable with text recognition.",
+  },
 ];
