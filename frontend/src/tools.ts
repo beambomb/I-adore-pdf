@@ -5,4 +5,10 @@ export interface ToolInfo {
 }
 
 /** Every implemented tool. Each task appends its own entry here. */
-export const tools: ToolInfo[] = [];
+export const tools: ToolInfo[] = [
+  {
+    path: "/merge",
+    title: "Merge PDF",
+    description: "Combine several PDF files into a single document.",
+  },
+];
