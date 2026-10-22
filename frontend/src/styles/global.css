@@ -326,3 +326,12 @@ a {
   color: var(--color-danger-text);
   font-size: 0.9rem;
 }
+
+.file-list__thumb {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: var(--color-bg);
+}
