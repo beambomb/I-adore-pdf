@@ -11,4 +11,9 @@ export const tools: ToolInfo[] = [
     title: "Merge PDF",
     description: "Combine several PDF files into a single document.",
   },
+  {
+    path: "/split",
+    title: "Split PDF",
+    description: "Extract page ranges or save every page as its own PDF.",
+  },
 ];

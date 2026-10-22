@@ -282,3 +282,47 @@ a {
   display: flex;
   gap: var(--space-1);
 }
+
+.file-summary {
+  margin: 0 0 var(--space-3);
+}
+
+.field-group {
+  margin: var(--space-3) 0 0;
+  padding: 0;
+  border: 0;
+}
+
+.field-group legend,
+.field-group > label:first-child {
+  display: block;
+  margin-bottom: var(--space-1);
+  padding: 0;
+  font-weight: 600;
+}
+
+.radio {
+  display: block;
+  padding: var(--space-1) 0;
+}
+
+.text-input {
+  width: 100%;
+  max-width: 360px;
+  padding: 8px 10px;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+}
+
+.text-input[aria-invalid="true"] {
+  border-color: var(--color-accent);
+}
+
+.field-error {
+  margin: var(--space-1) 0 0;
+  color: var(--color-danger-text);
+  font-size: 0.9rem;
+}

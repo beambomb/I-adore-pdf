@@ -3,6 +3,7 @@ import Layout from "./components/Layout";
 import HomePage from "./pages/HomePage";
 import MergePage from "./pages/MergePage";
 import NotFoundPage from "./pages/NotFoundPage";
+import SplitPage from "./pages/SplitPage";
 
 export default function App() {
   return (
@@ -10,6 +11,7 @@ export default function App() {
       <Route element={<Layout />}>
         <Route index element={<HomePage />} />
         <Route path="merge" element={<MergePage />} />
+        <Route path="split" element={<SplitPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>
